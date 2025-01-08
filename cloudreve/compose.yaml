@@ -1,0 +1,24 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  cloudreve:
+    # ports:
+    #   - 5212:5212
+    volumes:
+      - ${DOCKER_HOME}/cloudreve/cloudreve.db:/cloudreve/cloudreve.db
+      - ${DOCKER_HOME}/cloudreve/conf.ini:/cloudreve/conf.ini
+      - ${DOCKER_HOME}/cloudreve/uploads:/cloudreve/uploads
+      - ${DOCKER_HOME}/cloudreve/avatar:/cloudreve/avatar
+    image: cloudreve/cloudreve:latest
+    restart: unless-stopped
+    container_name: cloudreve
+    networks:
+      default:
+        ipv4_address: 172.20.0.17
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: 400M

@@ -1,0 +1,33 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  app:
+    image: jc21/nginx-proxy-manager:latest #latest #2.10.4
+    container_name: npm
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    # Uncomment the next line if you uncomment anything in the section
+    environment:
+      # Uncomment this if you want to change the location of the SQLite DB file within the container.
+      # DB_SQLITE_FILE: "/data/database.sqlite"
+
+      # Uncomment this if IPv6 is not enabled on your host
+      DISABLE_IPV6: "true"
+    volumes:
+      - ${DOCKER_HOME}/npm/data:/data
+      - ${DOCKER_HOME}/npm/letsencrypt:/etc/letsencrypt
+      - ${DOCKER_HOME}/filebrowser/srv/public:/srv
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      default:
+        ipv4_address: 172.20.0.2
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 300M

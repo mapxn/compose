@@ -1,0 +1,15 @@
+services:
+  xui:
+    image: enwaiax/x-ui:latest
+    container_name: x-ui
+    volumes:
+      - ${DOCKER_HOME}/x-ui/db/:/etc/x-ui/
+      - ${DOCKER_HOME}/x-ui/cert/:/root/cert/
+    restart: unless-stopped
+    network_mode: host
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 300M
+networks: {}

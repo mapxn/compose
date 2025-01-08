@@ -1,0 +1,28 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  lx-music:
+    container_name: lx-music-server
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_HOME}/lx-music-sync-server/data:/server/data/data
+      - ${DOCKER_HOME}/lx-music-sync-server/logs:/server/data/logs
+      - ${DOCKER_HOME}/lx-music-sync-server/conf/config.js:/server/config.js
+    # image: lx-music-sync-server:latest
+    environment:
+      - CONFIG_PATH='/server/config.js'
+      - LX_USER_user1=${LX_USER_user1}
+    build:
+      context: ./lx-music-sync-server
+    # ports:
+    #   - "9527:9527"
+    networks:
+      default:
+        ipv4_address: 172.20.0.29
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 100M

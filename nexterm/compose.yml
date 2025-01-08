@@ -1,0 +1,23 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  app:
+    image: germannewsmaker/nexterm:1.0.2-OPEN-PREVIEW
+    container_name: nexterm
+    restart: unless-stopped
+    # ports:
+      # - 6989:6989
+    volumes:
+      - ${DOCKER_HOME}/nexterm/data:/app/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      default:
+        ipv4_address: 172.20.0.24
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M

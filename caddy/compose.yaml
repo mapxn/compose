@@ -1,0 +1,26 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    #    ports:
+    #      - "80:80"
+    #      - "443:443"
+    #      - "443:443/udp"
+    volumes:
+      - ${DOCKER_HOME}/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ${DOCKER_HOME}/filebrowser/srv/public:/srv
+      - ${DOCKER_HOME}/caddy/data:/data
+      - ${DOCKER_HOME}/caddy/config:/config
+    networks:
+      default:
+        ipv4_address: 172.20.0.18
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 300M

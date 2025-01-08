@@ -1,0 +1,32 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  mysql:
+    container_name: mysql8
+    image: mysql:8
+    # ports:
+    #   - "3306:3306"
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: no
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ${DOCKER_HOME}/mysql8/log:/var/log/mysql
+      - ${DOCKER_HOME}/mysql8/data:/var/lib/mysql
+      - ${DOCKER_HOME}/mysql8/conf:/etc/mysql/conf.d
+      # - /etc/localtime:/etc/localtime:ro
+      # - /etc/timezone:/etc/timezone:ro
+    networks:
+      default:
+        ipv4_address: 172.20.0.15
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M

@@ -1,0 +1,27 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  alist:
+    image: xhofe/alist:latest
+    container_name: alist
+    volumes:
+      - ${DOCKER_HOME}/alist/data:/opt/alist/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    # ports:
+    #     - '5244:5244'
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=022
+    restart: unless-stopped
+    networks:
+      default:
+        ipv4_address: 172.20.0.8
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M

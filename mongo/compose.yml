@@ -1,0 +1,23 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    container_name: mongo
+    volumes:
+      - ${DOCKER_HOME}/mongo/data:/data/db
+      - ${DOCKER_HOME}/mongo/conf:/etc/mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: tree
+    command: --config /etc/mongo/mongod.conf
+    # ports:
+    #   - 27017:27017
+    networks:
+      default:
+        ipv4_address: 172.20.0.22
+

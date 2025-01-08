@@ -1,0 +1,21 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  uptime-kuma:
+    restart: unless-stopped
+    #    ports:
+    #      - 3001:3001
+    volumes:
+      - ${DOCKER_HOME}/uptime-kuma:/app/data
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma:1
+    networks:
+      default:
+        ipv4_address: 172.20.0.7
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M

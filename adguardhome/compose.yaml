@@ -1,0 +1,24 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  adguardhome:
+    container_name: adguardhome
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_HOME}/adguardhome/work:/opt/adguardhome/work
+      - ${DOCKER_HOME}/adguardhome/conf:/opt/adguardhome/conf
+      - ${DOCKER_HOME}/npm/letsencrypt/archive:/opt/adguardhome/archive:ro
+      - ${DOCKER_HOME}/npm/letsencrypt/live:/opt/adguardhome/live:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    image: adguard/adguardhome
+    networks:
+      default:
+        ipv4_address: 172.20.0.14
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 100M

@@ -1,0 +1,32 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    volumes:
+      - ${DOCKER_HOME}/vaultwarden/data/:/data/
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: unless-stopped
+    # ports:
+    #   - 80:80
+    image: vaultwarden/server:latest
+    environment:
+      - SMTP_HOST=smtp.larksuite.com
+      - SMTP_FROM=${SMTP_FROM}
+      - SMTP_PORT=587
+      - SMTP_SECURITY=starttls
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+      - WEB_VAULT_ENABLED=false
+    networks:
+      default:
+        ipv4_address: 172.20.0.6
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M

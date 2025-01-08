@@ -1,0 +1,25 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  cloud-torrent:
+    container_name: cloud-torrent
+    image: jpillora/cloud-torrent
+    restart: unless-stopped
+    # ports:
+    #   - "3000:3000"
+    volumes:
+      - ${DOCKER_HOME}/cloud-torrent/downloads:/downloads
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    command: --auth 'pama:6LSBuBGh@fvPpn5uM%U4'
+    networks:
+      default:
+        ipv4_address: 172.20.0.42
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 300M
+

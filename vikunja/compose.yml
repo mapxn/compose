@@ -1,0 +1,21 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  vikunja:
+    image: vikunja/vikunja
+    container_name: vikunja
+    volumes:
+      - ${DOCKER_HOME}/vikunja/files:/app/vikunja/files
+      - ${DOCKER_HOME}/vikunja/conf:/etc/vikunja
+      - ${DOCKER_HOME}/vikunja/db:/db
+    restart: unless-stopped
+    networks:
+      default:
+        ipv4_address: 172.20.0.16
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M

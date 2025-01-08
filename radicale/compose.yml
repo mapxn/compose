@@ -1,0 +1,28 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  radicale:
+    # image: tomsquest/docker-radicale
+    build:
+      context: ./Radicale
+    container_name: radicale
+    # ports:
+    #   - "5232:5232"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          pids: 50
+    healthcheck:
+      test: curl -f http://172.20.0.45:5232 || exit 1
+      interval: 30s
+      retries: 3
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_HOME}/radicale/data:/data
+      - ${DOCKER_HOME}/radicale/conf:/config:ro
+    networks:
+      default:
+        ipv4_address: 172.20.0.45

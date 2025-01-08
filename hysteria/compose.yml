@@ -1,0 +1,27 @@
+services:
+  hysteria:
+    image: tobyxdd/hysteria
+    container_name: hysteria
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${DOCKER_HOME}/hysteria/conf:/hysteria/conf
+      - ${DOCKER_HOME}/npm/letsencrypt/archive:/hysteria/letsencrypt/archive:ro
+      - ${DOCKER_HOME}/npm/letsencrypt/live:/hysteria/letsencrypt/live:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    command: ["server", "-c", "/hysteria/conf/hysteria.yml"]
+    environment:
+      - HYSTERIA_DISABLE_UPDATE_CHECK = 1
+    cap_add:
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+      - SYS_PTRACE
+      - DAC_READ_SEARCH
+    devices:
+      - '/dev/net/tun:/dev/net/tun'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M

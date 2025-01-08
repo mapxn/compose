@@ -1,0 +1,25 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  moments:
+    container_name: moments
+    image: kingwrcy/moments:latest
+    environment:
+      JWT_KEY: BbYS93dHLfIC1cQR0rI6
+    #    ports:
+    #      - "3000:3000"
+    volumes:
+      - ${DOCKER_HOME}/moments/data:/app/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: unless-stopped
+    networks:
+      default:
+        ipv4_address: 172.20.0.21
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 200M

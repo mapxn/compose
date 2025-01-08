@@ -1,0 +1,33 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  code-server:
+    image: codercom/code-server
+    container_name: code-server
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # ports:
+    #   - '8080:8080'
+    volumes:
+      - ${DOCKER_HOME}/code-server/coder:/home/coder
+      - ${DOCKER_HOME}/code-server/media:/usr/lib/code-server/src/browser/media
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      DOCKER_USER: ${USER}
+      TZ: ${TZ}
+    user: "${UID}:${GID}"
+    command: ["--proxy-domain", "${PROXY_DOMAIN}"]
+    networks:
+      default:
+        ipv4_address: 172.20.0.44
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 1024M

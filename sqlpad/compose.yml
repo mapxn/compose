@@ -1,0 +1,28 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  sqlpad:
+    image: sqlpad/sqlpad:latest
+    container_name: sqlpad
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_HOME}/sqlpad/lib:/var/lib/sqlpad
+      - ${DOCKER_HOME}/sqlpad/data:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    # ports:
+    #     - 3000:3000
+    environment:
+      SQLPAD_ADMIN: ${SQLPAD_ADMIN}
+      SQLPAD_ADMIN_PASSWORD: ${SQLPAD_ADMIN_PASSWORD}
+    networks:
+      default:
+        ipv4_address: 172.20.0.11
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 100M
+

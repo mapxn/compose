@@ -1,0 +1,25 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  xiaoya:
+    image: xiaoyaliu/alist:latest
+    container_name: xiaoya
+    restart: unless-stopped
+    # ports:
+    #   - '80:80'
+    #   - '2345:2345'
+    #   - '2346:2346'
+    environment:
+      DISABLE_IPV6: "true"
+    volumes:
+      - ${DOCKER_HOME}/xiaoya/data:/data
+    networks:
+      default:
+        ipv4_address: 172.20.0.12
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M

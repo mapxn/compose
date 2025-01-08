@@ -1,0 +1,25 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  sqlpage:
+    container_name: sqlpage
+    image: lovasoa/sqlpage
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_HOME}/sqlpage/www:/var/www
+      - ${DOCKER_HOME}/sqlpage/conf:/etc/sqlpage:ro
+      - ${DOCKER_HOME}/sqlpage/data:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    # ports:
+    #   - '8080:8080'
+    networks:
+      default:
+        ipv4_address: 172.20.0.37
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 300M

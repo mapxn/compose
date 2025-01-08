@@ -1,0 +1,41 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  mindoc:
+    image: registry.cn-hangzhou.aliyuncs.com/mindoc-org/mindoc:v2.1
+    container_name: mindoc
+    privileged: false
+    restart: unless-stopped
+    # ports:
+    #   - 8181:8181
+    volumes:
+      - ${DOCKER_HOME}/mindoc/conf:/mindoc/conf
+      - ${DOCKER_HOME}/mindoc/static:/mindoc/static
+      - ${DOCKER_HOME}/mindoc/views:/mindoc/views
+      - ${DOCKER_HOME}/mindoc/uploads:/mindoc/uploads
+      - ${DOCKER_HOME}/mindoc/runtime:/mindoc/runtime
+      - ${DOCKER_HOME}/mindoc/database:/mindoc/database
+    environment:
+      - MINDOC_RUN_MODE=prod
+      - MINDOC_DB_ADAPTER=sqlite3
+      - MINDOC_DB_DATABASE=/mindoc/database/mindoc.db
+      - MINDOC_CACHE=true
+      - MINDOC_CACHE_PROVIDER=file
+      - MINDOC_ENABLE_EXPORT=false
+      - MINDOC_BASE_URL=
+      - MINDOC_CDN_IMG_URL=
+      - MINDOC_CDN_CSS_URL=
+      - MINDOC_CDN_JS_URL=
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    networks:
+      default:
+        ipv4_address: 172.20.0.25
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 300M

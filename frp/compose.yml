@@ -1,0 +1,20 @@
+services:
+  Frp:
+    image: wnwd/frps:latest
+    container_name: frps
+    restart: unless-stopped
+    environment:
+      CONF_TYPE: yml
+      # CONF_TYPE: 'toml'
+      # CONF_TYPE: 'json'
+    volumes:
+      - ${DOCKER_HOME}/frp/conf:/etc/frp
+      - ${DOCKER_HOME}/frp/log:/var/log/frp
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    network_mode: host
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 300M

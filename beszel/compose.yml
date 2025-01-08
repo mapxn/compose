@@ -1,0 +1,42 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  beszel:
+    image: 'henrygd/beszel'
+    container_name: 'beszel'
+    restart: unless-stopped
+    # ports:
+    #   - '8090:8090'
+    volumes:
+      - ${DOCKER_HOME}/beszel/data:/beszel_data
+    networks:
+      default:
+        ipv4_address: 172.20.0.27
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 50M
+
+  beszel-agent:
+    image: 'henrygd/beszel-agent'
+    container_name: 'beszel-agent'
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      PORT: 45876
+      KEY: ${KEY}
+      FILESYSTEM: /dev/vda1
+    networks:
+      default:
+        ipv4_address: 172.20.0.28
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 12M

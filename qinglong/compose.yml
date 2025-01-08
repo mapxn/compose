@@ -1,0 +1,24 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  # main service
+  qinglong:
+    restart: unless-stopped
+    image: whyour/qinglong:latest
+    container_name: qinglong
+    volumes:
+      - ${DOCKER_HOME}/qinglong/data:/ql/data
+    environment:
+      QlBaseUrl: "/"
+    # ports:
+    #   - "5700:5700"
+    networks:
+      default:
+        ipv4_address: 172.20.0.23
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 500M

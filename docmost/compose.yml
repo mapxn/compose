@@ -1,0 +1,26 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  docmost:
+    image: docmost/docmost:latest
+    container_name: docmost
+      #depends_on:
+      # - postgres
+      # - redis
+    environment:
+      APP_URL: "${APP_URL}"
+      APP_SECRET: "${APP_SECRET}"
+      DATABASE_URL: "${DATABASE_URL}"
+      REDIS_URL: "redis://redis:6379"
+    # ports:
+    #   - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_HOME}/docmost/data:/app/data/storage
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      default:
+        ipv4_address: 172.20.0.33

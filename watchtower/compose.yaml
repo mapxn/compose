@@ -1,0 +1,23 @@
+networks:
+  default:
+    external: true
+    name: ${DOCKER_MY_NETWORK}
+services:
+  watchtower:
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: Asia/Shanghai
+    image: containrrr/watchtower
+    restart: unless-stopped
+    command: --cleanup
+    networks:
+      default:
+        ipv4_address: 172.20.0.254
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M
+

@@ -1,0 +1,19 @@
+networks: 
+  default:
+    external: true
+    name: npm_default
+
+services:
+  app:
+    image: 'username/image:tag'
+    container_name: namexxx
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    environment:
+      DISABLE_IPV6: 'true'
+    volumes:
+      -  ${DOCKER_HOME}/xxx/data:/data
+    networks:
+      default:
+        ipv4_address: 172.20.0.xx
