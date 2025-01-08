@@ -22,12 +22,12 @@ services:
       DOCKER_USER: ${USER}
       TZ: ${TZ}
     user: "${UID}:${GID}"
-    command: ["--proxy-domain", "${PROXY_DOMAIN}"]
+    command: ["--proxy-domain", "${PROXY_DOMAIN}", "--disable-telemetry"]
     networks:
-      default:
+      default:w
         ipv4_address: 172.20.0.44
     deploy:
       resources:
         limits:
-          cpus: 2
+          cpus: 1
           memory: 1024M
